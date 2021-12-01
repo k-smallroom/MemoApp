@@ -11,7 +11,7 @@
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 13,
+        // "ecmaVersion": 13,
         "sourceType": "module"
     },
     "plugins": [
@@ -22,6 +22,10 @@
             2, { "namedComponents": "function-declaration" }
         ],
 
-        "no-use-before-define": 0
+        "no-use-before-define": 0,
+
+        "indent": [
+            4
+        ]
     }
 }
