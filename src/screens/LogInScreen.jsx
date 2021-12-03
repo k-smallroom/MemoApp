@@ -1,15 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View, Text, TextInput, StyleSheet, TouchableOpacity, Alert,
 } from 'react-native';
 import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import Button from "../components/Button";
+import { firebaseConfig } from "../../env";
 
 export default function LogInScreen(props) {
     const { navigation } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const firebaseApp = firebase.initializeApp(firebaseConfig);
+    const auth = getAuth(firebaseApp);
+
+    useEffect(() => {
+        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'MemoList' }],
+                });
+            }
+        });
+        return unsubscribe;
+        // 画面が表示された一回だけuseEffectを処理する
+    }, []);
+
+    
+
+    // useEffect(() => {
+    //     onAuthStateChanged(auth, user => {
+    //         if (user) {
+    //             navigation.reset({
+    //                 index: 0,
+    //                 routes: [{ name: 'MemoList' }],
+    //             });
+    //         }
+    //     });
+    // });
     
     function handlePress() {
         firebase.auth().signInWithEmailAndPassword(email, password)
